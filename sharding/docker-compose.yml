@@ -1,0 +1,328 @@
+services:
+  shard00:
+    image: mongo
+    hostname: shard00
+    container_name: shard00
+    command: >
+      sh -c "mongod --replSet rs0 --shardsvr --dbpath /data/db --port 27017 --bind_ip localhost,shard00 && mongosh --file scripts/replicaset-0/init-mongo-replicaset.js"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/shard00:/data/db
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/replicaset-0:/scripts/replicaset-0
+    ports:
+      - 27022:27017
+    links:
+      - shard01
+      - shard02
+    depends_on:
+      - shard01
+      - shard02
+    networks:
+      - mongodb_sharding_cluster
+  shard01:
+    image: mongo
+    hostname: shard01
+    container_name: shard01
+    command: sh -c "mongod --replSet rs0 --shardsvr --dbpath /data/db --port 27017 --bind_ip localhost,shard01"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/shard01:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27023:27017
+    networks:
+      - mongodb_sharding_cluster
+  shard02:
+    image: mongo
+    hostname: shard02
+    container_name: shard02
+    command: sh -c "mongod --replSet rs0 --shardsvr --dbpath /data/db --port 27017 --bind_ip localhost,shard02"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/shard02:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27024:27017
+    networks:
+      - mongodb_sharding_cluster
+
+  shard10:
+    image: mongo
+    hostname: shard10
+    container_name: shard10
+    command: >
+      sh -c "mongod --replSet rs1 --shardsvr --dbpath /data/db --port 27017 --bind_ip localhost,shard10 && mongosh --file scripts/replicaset-1/init-mongo-replicaset.js"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/shard10:/data/db
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/replicaset-1:/scripts/replicaset-1
+    ports:
+      - 27025:27017
+    links:
+      - shard11
+      - shard12
+    depends_on:
+      - shard11
+      - shard12
+    networks:
+      - mongodb_sharding_cluster
+  shard11:
+    image: mongo
+    hostname: shard11
+    container_name: shard11
+    command: sh -c "mongod --replSet rs1 --shardsvr --dbpath /data/db --port 27017 --bind_ip localhost,shard11"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/shard11:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27026:27017
+    networks:
+      - mongodb_sharding_cluster
+  shard12:
+    image: mongo
+    hostname: shard12
+    container_name: shard12
+    command: sh -c "mongod --replSet rs1 --shardsvr --dbpath /data/db --port 27017 --bind_ip localhost,shard12"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/shard12:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27027:27017
+    networks:
+      - mongodb_sharding_cluster
+
+  shard20:
+    image: mongo
+    hostname: shard20
+    container_name: shard20
+    command: >
+      sh -c "mongod --replSet rs2 --shardsvr --dbpath /data/db --port 27017 --bind_ip localhost,shard20 &&  mongosh --file scripts/replicaset-2/init-mongo-replicaset.js"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/shard20:/data/db
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/replicaset-2:/scripts/replicaset-2
+    ports:
+      - 27028:27017
+    links:
+      - shard21
+      - shard22
+    depends_on:
+      - shard21
+      - shard22
+    networks:
+      - mongodb_sharding_cluster
+  shard21:
+    image: mongo
+    hostname: shard21
+    container_name: shard21
+    command: sh -c "mongod --replSet rs2 --shardsvr --dbpath /data/db --port 27017 --bind_ip localhost,shard21"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/shard21:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27029:27017
+    networks:
+      - mongodb_sharding_cluster
+  shard22:
+    image: mongo
+    hostname: shard22
+    container_name: shard22
+    command: sh -c "mongod --replSet rs2 --shardsvr --dbpath /data/db --port 27017 --bind_ip localhost,shard22"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/shard22:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27030:27017
+    networks:
+      - mongodb_sharding_cluster
+
+  configsvr0:
+    image: mongo
+    hostname: configsvr0
+    container_name: configsvr0
+    command: >
+      sh -c "mongod --replSet configRs --configsvr --dbpath /data/db --port 27017 --bind_ip localhost,configsvr0 && mongosh --file scripts/config-replicaset/init-mongo-replicaset.js"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/configsvr0:/data/db
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/config-replicaset:/scripts/config-replicaset
+    ports:
+      - 27019:27017
+    links:
+      - shard00
+      - shard10
+      - shard20
+    depends_on:
+      - shard00
+      - shard10
+      - shard20
+      - configsvr1
+      - configsvr2
+    networks:
+      - mongodb_sharding_cluster
+  configsvr1:
+    image: mongo
+    hostname: configsvr1
+    container_name: configsvr1
+    command: sh -c "mongod --replSet configRs --configsvr --dbpath /data/db --port 27017 --bind_ip localhost,configsvr1"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/configsvr1:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27020:27017
+    networks:
+      - mongodb_sharding_cluster
+  configsvr2:
+    image: mongo
+    hostname: configsvr2
+    container_name: configsvr2
+    command: sh -c "mongod --replSet configRs --configsvr --dbpath /data/db --port 27017 --bind_ip localhost,configsvr2"
+    environment:
+      TERM: linux
+      LANG: 'C.UTF-8'
+      LOG_ROTATION_DAY: 7
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '2'
+    volumes:
+      - ./data/configsvr2:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 27021:27017
+    networks:
+      - mongodb_sharding_cluster
+
+  router0:
+    image: mongo
+    hostname: router0
+    container_name: router0
+    command: >
+      sh -c "mongos --configdb configRs/configsvr0:27017,configsvr1:27017,configsvr2:27017 --port 27017 --bind_ip localhost,router0 && mongosh --file scripts/sharding-replicaset/init-mongo-sharding-replicaset.js"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/sharding-replicaset:/scripts/sharding-replicaset
+    ports:
+      - 27017:27017
+    links:
+      - configsvr0
+    depends_on:
+      - configsvr0
+    networks:
+      - mongodb_sharding_cluster
+  router1:
+    image: mongo
+    hostname: router1
+    container_name: router1
+    command: sh -c "mongos --configdb configRs/configsvr0:27017,configsvr1:27017,configsvr2:27017 --port 27017 --bind_ip localhost,router1 && mongosh --file scripts/sharding-replicaset/init-mongo-sharding-replicaset.js"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./scripts/sharding-replicaset:/scripts/sharding-replicaset
+    ports:
+      - 27018:27017
+    links:
+      - router0
+    networks:
+      - mongodb_sharding_cluster
+
+networks:
+  mongodb_sharding_cluster:
+    driver: bridge
